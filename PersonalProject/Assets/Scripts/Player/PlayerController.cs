@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -12,32 +11,20 @@ public class PlayerController : MonoBehaviour
     private Transform _body;
     [SerializeField] private Animator _anim;
 
-    private float _speed;
-
+    private ObserveValue<float> _speed;
     public float Speed
     {
-        get => _speed;
-        set
-        {
-            _speed = value;
-            _anim.SetFloat("Speed", _speed * 100);
-        }
+        get => _speed.Value;
+        private set => _speed.Value = value;
     }
 
-    private Vector3 _inputAxis;
+    private ObserveValue<Vector3> _inputAxis = new ObserveValue<Vector3>();
 
     public Vector3 InputAxis
     {
-        get => _inputAxis;
-        private set
-        {
-            _inputAxis = value;
-            OnChangeAngle?.Invoke(Vector3.SignedAngle(Vector3.forward, value, Vector3.up));
-        }
+        get => _inputAxis.Value;
+        private set => _inputAxis.Value = value;
     }
-
-    public UnityEvent<float> OnChangeAngle;
-
 
     //MovementState
     private PlayerMovement Movement;
@@ -57,7 +44,8 @@ public class PlayerController : MonoBehaviour
         Walk = new WalkState(this);
         Run = new RunState(this);
         Movement.ChangeState(Standby);
-        OnChangeAngle.AddListener(ChangeDirection);
+        _inputAxis.AddListener(ChangeDirection);
+        _speed.AddListener(ChangeSpeed);
     }
 
     private void OnEnable()
@@ -82,16 +70,15 @@ public class PlayerController : MonoBehaviour
     public void FixedUpdate()
     {
         Vector3 forward = _camera.transform.forward;
-        Vector3 right =  _camera.transform.right;
+        Vector3 right = _camera.transform.right;
         forward.y = 0;
         right.y = 0;
         forward.Normalize();
         right.Normalize();
-        
+
         Vector3 move = right * InputAxis.x + forward * InputAxis.z;
         _body.forward = forward;
         _controller.Move(move * Speed * Time.fixedDeltaTime);
-        
     }
 
     private void OnMove(InputAction.CallbackContext ctx)
@@ -110,8 +97,13 @@ public class PlayerController : MonoBehaviour
         Movement.ChangeState(state);
     }
 
-    public void ChangeDirection(float value)
+    public void ChangeDirection(Vector3 value)
     {
-        _anim.SetFloat("Direction", value);
+        _anim.SetFloat("Direction", Mathf.Atan2(value.x, value.z) / Mathf.PI);
+    }
+
+    public void ChangeSpeed(float value)
+    {
+        _anim.SetFloat("Speed", value/3);
     }
 }
