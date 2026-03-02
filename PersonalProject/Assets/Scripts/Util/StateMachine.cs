@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class PlayerMovement
+public class StateMachine
 {
     private IState _currentState;
 
