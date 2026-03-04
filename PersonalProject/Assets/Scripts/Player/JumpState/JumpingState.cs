@@ -3,25 +3,28 @@
 public class JumpingState : IState
 
 {
-    private PlayerController _owner;
+    private CharacterStatus Status;
+    private CharacterMovement _movement;
 
-    public JumpingState(PlayerController pc)
+    public JumpingState(CharacterMovement movement, CharacterStatus status)
     {
-        _owner = pc;
+        Status = status;
+        _movement = movement;
     }
 
     public void Enter()
     {
-        _owner.GetAnim.CrossFade("Jump_Up", 0.1f);
-        _owner.JumpVelocity.Value = Mathf.Sqrt(_owner.JumpHeight * -2f * Physics.gravity.y);
-        _owner.IsCrouch.Value = false;
+        _movement.GetAnim.CrossFade("Jump_Up", 0.1f);
+        Status.JumpVelocity.Value = Mathf.Sqrt(Status.JumpHeight * -2f * Physics.gravity.y);
+        Status.IsCrouch.Value = false;
+        Status.IsAction.Value = true;
     }
 
     public void Update()
     {
-        if (_owner.JumpVelocity.Value < 0)
+        if (Status.JumpVelocity.Value < 0)
         {
-            _owner.ChangeJumpState(_owner.Fall);
+            _movement.ChangeJumpState(_movement.Fall);
         }
     }
 

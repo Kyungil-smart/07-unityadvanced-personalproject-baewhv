@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
+[System.Serializable]
 public class ObserveValue<T> where T : struct
 {
     private T _data = default;

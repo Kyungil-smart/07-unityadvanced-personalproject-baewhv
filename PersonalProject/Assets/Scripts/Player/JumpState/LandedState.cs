@@ -2,21 +2,24 @@
 
 public class LandedState : IState
 {
-    private PlayerController _owner;
+    private CharacterStatus _status;
+    private CharacterMovement _movement;
 
-    public LandedState(PlayerController pc)
+    public LandedState(CharacterMovement movement, CharacterStatus status)
     {
-        _owner = pc;
+        _status = status;
+        _movement = movement;
     }
 
     public void EndJump()
     {
-        _owner.ChangeJumpState(_owner.JumpStandby);
+        _movement.ChangeJumpState(_movement.JumpStandby);
+        _status.IsAction.Value = false;
     }
 
     public void Enter()
     {
-        _owner.GetAnim.CrossFade("Jump_Land", 0.1f);
+        _movement.GetAnim.CrossFade("Jump_Land", 0.1f);
     }
 
     public void Update()

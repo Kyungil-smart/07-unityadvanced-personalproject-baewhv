@@ -2,17 +2,20 @@
 
 public class JumpStandbyState : IState
 {
-    private PlayerController _owner;
+    private CharacterStatus Status;
+    private CharacterMovement _movement;
 
-    public JumpStandbyState(PlayerController pc)
+    public JumpStandbyState(CharacterMovement movement, CharacterStatus status)
     {
-        _owner = pc;
+        Status = status;
+        _movement = movement;
     }
 
     public void Enter()
     {
-        _owner.IsJump.Value = false;
-        _owner.JumpVelocity.Value = 0f;
+        Status.IsJump.Value = false;
+        Status.IsAction.Value = false;
+        Status.JumpVelocity.Value = 0f;
     }
 
     public void Update()

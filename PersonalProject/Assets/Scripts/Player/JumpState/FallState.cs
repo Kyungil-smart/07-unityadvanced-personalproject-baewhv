@@ -2,22 +2,24 @@
 
 public class FallState : IState
 {
-    private PlayerController _owner;
+    private CharacterStatus Status;
+    private CharacterMovement _movement;
 
-    public FallState(PlayerController pc)
+    public FallState(CharacterMovement movement, CharacterStatus status)
     {
-        _owner = pc;
+        Status = status;
+        _movement = movement;
     }
     public void Enter()
     {
-        _owner.GetAnim.CrossFade("Jump_Falling", 0.1f);
+        
     }
 
     public void Update()
     {
-        if (_owner.isGrounded())
+        if (_movement.isGrounded())
         {
-            _owner.ChangeJumpState(_owner.Landed);
+            _movement.ChangeJumpState(_movement.Landed);
         }
     }
 

@@ -2,27 +2,29 @@
 
 public class WalkState : IState
 {
-    private PlayerController _owner;
+    private CharacterStatus Status;
+    private CharacterMovement _movement;
 
-    public WalkState(PlayerController pc)
+    public WalkState(CharacterMovement movement, CharacterStatus status)
     {
-        _owner = pc;
+        Status = status;
+        _movement = movement;
     }
 
     public void Enter()
     {
-        _owner.Speed.Value = 1.0f;
+        Status.TargetSpeed = Status.WalkSpeed;
     }
 
     public void Update()
     {
-        if (_owner.InputAxis.Value == Vector3.zero)
+        if (Status.TargetDirection == Vector3.zero)
         {
-            _owner.ChangeMovement(_owner.Standby);
+            _movement.ChangeMovement(_movement.Standby);
             return;
         }
-        if(!_owner.IsWalk.Value)
-            _owner.ChangeMovement(_owner.Run);
+        if(!Status.IsWalk.Value && !Status.IsCrouch.Value)
+            _movement.ChangeMovement(_movement.Run);
     }
 
     public void Exit()

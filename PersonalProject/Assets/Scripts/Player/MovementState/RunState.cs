@@ -2,27 +2,29 @@ using UnityEngine;
 
 public class RunState : IState
 {
-    private PlayerController _owner;
+    private CharacterStatus Status;
+    private CharacterMovement _movement;
 
-    public RunState(PlayerController pc)
+    public RunState(CharacterMovement movement, CharacterStatus status)
     {
-        _owner = pc;
+        Status = status;
+        _movement = movement;
     }
     
     public void Enter()
     {
-        _owner.Speed.Value = 3.0f;
+        Status.TargetSpeed = Status.RunSpeed;
     }
     
     public void Update()
     {
-        if (_owner.InputAxis.Value == Vector3.zero)
+        if (Status.TargetDirection == Vector3.zero)
         {
-            _owner.ChangeMovement(_owner.Standby);
+            _movement.ChangeMovement(_movement.Standby);
             return;
         }
-        if(_owner.IsWalk.Value || _owner.IsCrouch.Value)
-            _owner.ChangeMovement(_owner.Walk);
+        if(Status.IsWalk.Value || Status.IsCrouch.Value)
+            _movement.ChangeMovement(_movement.Walk);
     }
     public void Exit()
     {
