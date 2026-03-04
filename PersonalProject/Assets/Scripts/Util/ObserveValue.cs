@@ -15,7 +15,7 @@ public class ObserveValue<T> where T : struct
         }
     }
 
-    public UnityEvent<T> OnValueChange = new UnityEvent<T>();
+    private UnityEvent<T> OnValueChange = new UnityEvent<T>();
 
     public void AddListener(UnityAction<T> action)
     {

@@ -2,46 +2,76 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDamageable
 {
     private CharacterController _controller;
     private MainPlayerInput _input;
     private Camera _camera;
 
+    public bool LockCharacterRotateCamera { get; set; }
+
     private Transform _body;
     [SerializeField] private Animator _anim;
+    public Animator GetAnim => _anim;
+    public AnimationReceiver _animReceiver { get; private set; }
 
-    public ObserveValue<float> Speed = new ObserveValue<float>();
-    private float _jumpHeight = 2.0f;
-    private float _jumpVelocity = 0.0f;
-    public ObserveValue<Vector3> InputAxis = new ObserveValue<Vector3>();
-    public ObserveValue<bool> IsWalk = new ObserveValue<bool>();
-    public ObserveValue<bool> IsJump = new ObserveValue<bool>();
+    public float TargetSpeed { get; set; }
+    public ObserveValue<float> Speed = new();
+    public ObserveValue<Vector3> InputAxis = new();
+    public ObserveValue<float> JumpVelocity = new();
+    public ObserveValue<bool> IsWalk = new();
+    public ObserveValue<bool> IsJump = new();
+    public ObserveValue<bool> IsCrouch = new();
 
     //StateMachine
-    private StateMachine _stateMachine;
+    private StateMachine _movementStateMachine;
     public StandState Standby { get; private set; }
     public RunState Run { get; private set; }
     public WalkState Walk { get; private set; }
 
+    private StateMachine _jumpStateMachine;
+    public JumpStandbyState JumpStandby { get; private set; }
+    public JumpingState JumpingStart { get; private set; }
+    public FallState Fall { get; private set; }
+    public LandedState Landed { get; private set; }
+    public float JumpHeight { get; private set; } = 2.0f;
+
+    //unityEvents
     private void Awake()
     {
         _controller = GetComponent<CharacterController>();
         _body = _anim.gameObject.transform;
+        _animReceiver = _body.GetComponent<AnimationReceiver>();
         _camera = Camera.main;
 
         //States
-        _stateMachine = new StateMachine();
+        _movementStateMachine = new StateMachine();
         Standby = new StandState(this);
         Walk = new WalkState(this);
         Run = new RunState(this);
-        _stateMachine.ChangeState(Standby);
+        _movementStateMachine.ChangeState(Standby);
+        
+        _jumpStateMachine = new StateMachine();
+        JumpStandby = new JumpStandbyState(this);
+        JumpingStart = new JumpingState(this);
+        Fall = new FallState(this);
+        Landed = new LandedState(this);
+        _jumpStateMachine.ChangeState(JumpStandby);
+        _animReceiver.OnEndLand.AddListener(Landed.EndJump);
 
         //Input
         _input = new MainPlayerInput();
 
         InputAxis.AddListener(ChangeDirection);
         Speed.AddListener(ChangeSpeed);
+        IsJump.AddListener(value =>
+        {
+            if (value == true)
+            {
+                _jumpStateMachine.ChangeState(JumpingStart);
+            }
+        });
+        IsCrouch.AddListener(ChangeCrouch);
     }
 
     private void OnEnable()
@@ -52,7 +82,9 @@ public class PlayerController : MonoBehaviour
         _input.Player.Walk.started += OnWalk;
         _input.Player.Walk.canceled += OffWalk;
         _input.Player.Jump.started += OnJump;
-        _input.Player.Jump.canceled += OnJump;
+        _input.Player.Jump.canceled += OnJumpCanceled;
+        _input.Player.Crouch.started += OnCrouch;
+        _input.Player.Crouch.canceled += OnCrouchCancel;
     }
 
     private void OnDisable()
@@ -62,13 +94,16 @@ public class PlayerController : MonoBehaviour
         _input.Player.Walk.started -= OnWalk;
         _input.Player.Walk.canceled -= OffWalk;
         _input.Player.Jump.started -= OnJump;
-        _input.Player.Jump.canceled -= OnJump;
+        _input.Player.Jump.canceled -= OnJumpCanceled;
+        _input.Player.Crouch.started -= OnCrouch;
+        _input.Player.Crouch.canceled -= OnCrouchCancel;
         _input.asset.Disable();
     }
 
     public void Update()
     {
-        _stateMachine.Update();
+        _movementStateMachine.Update();
+        _jumpStateMachine.Update();
     }
 
     public void FixedUpdate()
@@ -80,12 +115,22 @@ public class PlayerController : MonoBehaviour
         forward.Normalize();
         right.Normalize();
 
-        Gravity();
 
         Vector3 move = right * InputAxis.Value.x + forward * InputAxis.Value.z;
         _body.forward = forward;
         _controller.Move(move * Speed.Value * Time.fixedDeltaTime);
+
+        JumpVelocity.Value += Physics.gravity.y * Time.fixedDeltaTime;
+        _controller.Move(Vector3.up * JumpVelocity.Value * Time.fixedDeltaTime);
     }
+    
+    //interfaces
+    public void Damaged(int value)
+    {
+        throw new System.NotImplementedException();
+    }
+    
+    //member
 
     private void OnMove(InputAction.CallbackContext ctx)
     {
@@ -112,22 +157,37 @@ public class PlayerController : MonoBehaviour
 
     private void OnJump(InputAction.CallbackContext ctx)
     {
-        if (ctx.started)
+        if (ctx.started && !IsJump.Value)
         {
             IsJump.Value = true;
-            _anim.CrossFade("Jump_Up", 0.1f);
         }
     }
 
     private void OnJumpCanceled(InputAction.CallbackContext ctx)
     {
-        if (_jumpVelocity > 0)
-            _jumpVelocity *= 0.5f;
+        if (JumpVelocity.Value > 0)
+            JumpVelocity.Value *= 0.5f;
+    }
+
+    private void OnCrouch(InputAction.CallbackContext ctx)
+    {
+        if (ctx.started)
+            IsCrouch.Value = true;
+    }
+    private void OnCrouchCancel(InputAction.CallbackContext ctx)
+    {
+        if (ctx.canceled)
+            IsCrouch.Value = false;
     }
 
     public void ChangeMovement(IState state)
     {
-        _stateMachine.ChangeState(state);
+        _movementStateMachine.ChangeState(state);
+    }
+    
+    public void ChangeJumpState(IState state)
+    {
+        _jumpStateMachine.ChangeState(state);
     }
 
     public void ChangeDirection(Vector3 value)
@@ -137,32 +197,23 @@ public class PlayerController : MonoBehaviour
 
     public void ChangeSpeed(float value)
     {
-        _anim.SetFloat("Speed", value / 3);
+        _anim.SetFloat("Speed", value);
     }
 
-    private void Gravity()
+    public void ChangeCrouch(bool value)
     {
-        if (isGrounded()) //없으면 이전 낙하정보가 있어서 빠른 속도로 떨어짐.
-        {
-            _jumpVelocity = -2f;
-        }
-
-        if (IsJump.Value && isGrounded())
-        {
-            _jumpVelocity = Mathf.Sqrt(_jumpHeight * -2f * Physics.gravity.y);
-            _anim.CrossFade("Jump_Land", 0.1f);
-            IsJump.Value = false;
-        }
-
-        _jumpVelocity += Physics.gravity.y * Time.fixedDeltaTime;
-        _controller.Move(Vector3.up * _jumpVelocity * Time.fixedDeltaTime);
+        _anim.SetBool("IsCrouch", value);
     }
 
-    private bool isGrounded()
+    public bool isGrounded()
     {
         if (_controller.isGrounded) return true;
         Vector3 ray = transform.position + Vector3.up * 0.1f;
         if (Physics.Raycast(ray, Vector3.down, out RaycastHit Hit, 0.2f)) return true;
         return false;
     }
+    
+    
+
+
 }

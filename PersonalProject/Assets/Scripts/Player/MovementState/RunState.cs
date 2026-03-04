@@ -21,7 +21,7 @@ public class RunState : IState
             _owner.ChangeMovement(_owner.Standby);
             return;
         }
-        if(_owner.IsWalk.Value)
+        if(_owner.IsWalk.Value || _owner.IsCrouch.Value)
             _owner.ChangeMovement(_owner.Walk);
     }
     public void Exit()
