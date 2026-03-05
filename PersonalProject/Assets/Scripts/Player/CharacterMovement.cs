@@ -76,6 +76,11 @@ public class CharacterMovement : MonoBehaviour
         _jumpStateMachine.ChangeState(state);
     }
 
+    public void ChangeAnimController(RuntimeAnimatorController controller)
+    {
+        _anim.runtimeAnimatorController = controller;
+    }
+
     public void ChangeDirectionAnim(Vector3 value)
     {
         _anim.SetFloat("Direction", Mathf.Atan2(value.x, value.z) / Mathf.PI);

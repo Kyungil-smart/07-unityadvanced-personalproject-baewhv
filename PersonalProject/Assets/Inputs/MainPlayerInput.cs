@@ -163,6 +163,33 @@ public partial class @MainPlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MeleeWeapon"",
+                    ""type"": ""Button"",
+                    ""id"": ""0bb88140-3d83-4396-80a2-109f5ddc7f2e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RangeWeapon"",
+                    ""type"": ""Button"",
+                    ""id"": ""5aa0aa88-a937-4826-a20a-e25667fa0bea"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RemoveWeapon"",
+                    ""type"": ""Button"",
+                    ""id"": ""04b4c04e-e8dc-46c8-ac3a-8575a43c0eaa"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -297,6 +324,39 @@ public partial class @MainPlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""99aca4cc-22c7-45eb-afbd-6889fe9f3c09"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MeleeWeapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6cec8fa0-b921-4772-bab7-20c41ade6dc3"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RangeWeapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8703bf8e-7f37-4a67-bd35-21f925f7be95"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RemoveWeapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -330,6 +390,9 @@ public partial class @MainPlayerInput: IInputActionCollection2, IDisposable
         m_Player_Attack_2 = m_Player.FindAction("Attack_2", throwIfNotFound: true);
         m_Player_Walk = m_Player.FindAction("Walk", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
+        m_Player_MeleeWeapon = m_Player.FindAction("MeleeWeapon", throwIfNotFound: true);
+        m_Player_RangeWeapon = m_Player.FindAction("RangeWeapon", throwIfNotFound: true);
+        m_Player_RemoveWeapon = m_Player.FindAction("RemoveWeapon", throwIfNotFound: true);
     }
 
     ~@MainPlayerInput()
@@ -418,6 +481,9 @@ public partial class @MainPlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Attack_2;
     private readonly InputAction m_Player_Walk;
     private readonly InputAction m_Player_Jump;
+    private readonly InputAction m_Player_MeleeWeapon;
+    private readonly InputAction m_Player_RangeWeapon;
+    private readonly InputAction m_Player_RemoveWeapon;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -461,6 +527,18 @@ public partial class @MainPlayerInput: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Jump".
         /// </summary>
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/MeleeWeapon".
+        /// </summary>
+        public InputAction @MeleeWeapon => m_Wrapper.m_Player_MeleeWeapon;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/RangeWeapon".
+        /// </summary>
+        public InputAction @RangeWeapon => m_Wrapper.m_Player_RangeWeapon;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/RemoveWeapon".
+        /// </summary>
+        public InputAction @RemoveWeapon => m_Wrapper.m_Player_RemoveWeapon;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -511,6 +589,15 @@ public partial class @MainPlayerInput: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
+            @MeleeWeapon.started += instance.OnMeleeWeapon;
+            @MeleeWeapon.performed += instance.OnMeleeWeapon;
+            @MeleeWeapon.canceled += instance.OnMeleeWeapon;
+            @RangeWeapon.started += instance.OnRangeWeapon;
+            @RangeWeapon.performed += instance.OnRangeWeapon;
+            @RangeWeapon.canceled += instance.OnRangeWeapon;
+            @RemoveWeapon.started += instance.OnRemoveWeapon;
+            @RemoveWeapon.performed += instance.OnRemoveWeapon;
+            @RemoveWeapon.canceled += instance.OnRemoveWeapon;
         }
 
         /// <summary>
@@ -546,6 +633,15 @@ public partial class @MainPlayerInput: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
+            @MeleeWeapon.started -= instance.OnMeleeWeapon;
+            @MeleeWeapon.performed -= instance.OnMeleeWeapon;
+            @MeleeWeapon.canceled -= instance.OnMeleeWeapon;
+            @RangeWeapon.started -= instance.OnRangeWeapon;
+            @RangeWeapon.performed -= instance.OnRangeWeapon;
+            @RangeWeapon.canceled -= instance.OnRangeWeapon;
+            @RemoveWeapon.started -= instance.OnRemoveWeapon;
+            @RemoveWeapon.performed -= instance.OnRemoveWeapon;
+            @RemoveWeapon.canceled -= instance.OnRemoveWeapon;
         }
 
         /// <summary>
@@ -655,5 +751,26 @@ public partial class @MainPlayerInput: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnJump(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "MeleeWeapon" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnMeleeWeapon(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "RangeWeapon" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnRangeWeapon(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "RemoveWeapon" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnRemoveWeapon(InputAction.CallbackContext context);
     }
 }
