@@ -7,6 +7,7 @@ public class MeleeWeapon : MonoBehaviour
     public int Damage;
 
     private int _durability;
+    private Weapon weapon;
 
     private int Durability
     {
@@ -27,13 +28,13 @@ public class MeleeWeapon : MonoBehaviour
             if (target != null)
             {
                 target.TakeDamage(Damage);
-                Durability--;
+                Durability -= 1;
             }
         }
     }
 
     private void DestroyWeapon()
     {
-        Destroy(gameObject);
+        _owner.DestroyMeleeWeapon();
     }
 }

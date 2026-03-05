@@ -507,6 +507,7 @@ Transform:
   - {fileID: 6507341109661120214}
   - {fileID: 1118360328584706488}
   - {fileID: 6239136008027508687}
+  - {fileID: 7902274987697782884}
   m_Father: {fileID: 3788231527521021732}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2610100439218997336
@@ -589,9 +590,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnShoot:
-    m_PersistentCalls:
-      m_Calls: []
-  OnStartEquip:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &2662321120918486239
@@ -1644,7 +1642,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterMovement
   _anim: {fileID: 2784920034092279040}
-  _controllers: []
 --- !u!114 &1125646656271288260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1657,6 +1654,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca7d3ecf83e970a4fb60986141158da7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Equipment
+  <MeleeWeaponHolster>k__BackingField: {fileID: 4737577984508245566}
+  <RangeWeaponHolster>k__BackingField: {fileID: 7063581336245885301}
+  <RightHand>k__BackingField: {fileID: 7902274987697782884}
+  <Modes>k__BackingField:
+  - {fileID: 22100000, guid: 813d95f37bfb3654c8fb3cd88336ce63, type: 2}
+  - {fileID: 22100000, guid: 4d84a0131052a1d4d8961fc0d12dfcfc, type: 2}
+  - {fileID: 22100000, guid: 3f42610f8bf2f7749a9841717a8b17fa, type: 2}
 --- !u!1 &5628604491172640594
 GameObject:
   m_ObjectHideFlags: 0
@@ -1961,6 +1965,37 @@ Transform:
   - {fileID: 5941644315856327123}
   m_Father: {fileID: 9107723146603290595}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6259922820789113809
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7902274987697782884}
+  m_Layer: 0
+  m_Name: WeaponSlot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7902274987697782884
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6259922820789113809}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.4414246, y: 0.59024805, z: 0.3339366, w: 0.58756965}
+  m_LocalPosition: {x: 0.001, y: 0.088, z: 0.069}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 289106825497737419}
+  m_LocalEulerAnglesHint: {x: -114.084, y: -77.763, z: 161.62}
 --- !u!1 &6281264179654989511
 GameObject:
   m_ObjectHideFlags: 0
@@ -1971,7 +2006,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4737577984508245566}
   m_Layer: 0
-  m_Name: WeaponSlot2
+  m_Name: MeleeHolster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2719,7 +2754,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7063581336245885301}
   m_Layer: 0
-  m_Name: WeaponSlot1
+  m_Name: RangeHolster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -6,7 +6,7 @@ AnimatorOverrideController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Ranged
+  m_Name: Range
   m_Controller: {fileID: 9100000, guid: cf93c043312ee9540829662124239272, type: 2}
   m_Clips:
   - m_OriginalClip: {fileID: -203655887218126122, guid: e44ff9ca2ec38f6408ea129c920e5b20, type: 3}

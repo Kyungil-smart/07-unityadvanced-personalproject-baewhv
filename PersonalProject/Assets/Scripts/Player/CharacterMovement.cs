@@ -2,11 +2,11 @@ using System;
 using UnityEngine;
 
 
-
 public class CharacterMovement : MonoBehaviour
 {
     private CharacterStatus _status;
     private CharacterController _controller;
+    
 
     private StateMachine _movementStateMachine;
     public StandState Standby { get; private set; }
@@ -23,17 +23,17 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField] private Animator _anim;
 
     public Animator GetAnim => _anim;
-    private AnimationReceiver _animReceiver;
+    public AnimationReceiver AnimReceiver { get; private set; }
 
-    public MotionState CurrentMotionState { get; private set; }
-    [SerializeField]private RuntimeAnimatorController[] _controllers;
+
 
     public void Init(CharacterStatus status)
     {
         _status = status;
         _controller = GetComponent<CharacterController>();
         _body = _anim.gameObject.transform;
-        _animReceiver = _body.GetComponent<AnimationReceiver>();
+        AnimReceiver = _body.GetComponent<AnimationReceiver>();
+        
 
         _movementStateMachine = new StateMachine();
         Standby = new StandState(this, _status);
@@ -47,7 +47,8 @@ public class CharacterMovement : MonoBehaviour
         Fall = new FallState(this, _status);
         Landed = new LandedState(this, _status);
         _jumpStateMachine.ChangeState(JumpStandby);
-        _animReceiver.OnEndLand.AddListener(Landed.EndJump);
+        AnimReceiver.OnEndLand.AddListener(Landed.EndJump);
+        
     }
 
     private void Update()
@@ -81,9 +82,10 @@ public class CharacterMovement : MonoBehaviour
         _jumpStateMachine.ChangeState(state);
     }
 
-    private void ChangeAnimController(RuntimeAnimatorController controller)
+    public void ChangeAnimController(RuntimeAnimatorController controller)
     {
         _anim.runtimeAnimatorController = controller;
+        
     }
 
     public void ChangeDirectionAnim(Vector3 value)
@@ -119,14 +121,9 @@ public class CharacterMovement : MonoBehaviour
         return false;
     }
 
-    public void SetMotionState(MotionState state)
+    public void PlayAction(string anim, float fadeDuration)
     {
-        CurrentMotionState = state;
+        _status.IsAction.Value = true;
+        _anim.CrossFade(anim, fadeDuration);
     }
-}
-public enum MotionState
-{
-    Unarmed,
-    Melee,
-    Range
 }

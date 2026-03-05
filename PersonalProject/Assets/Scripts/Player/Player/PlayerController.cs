@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 {
     private PlayerStatus _status;
     private CharacterMovement _movement;
+    public Equipment Equipment { get; private set; }
     private MainPlayerInput _input;
     public Camera _camera { get; private set; }
 
@@ -19,6 +20,8 @@ public class PlayerController : MonoBehaviour, IDamageable
     private void Awake()
     {
         _movement = GetComponent<CharacterMovement>();
+        Equipment = GetComponent<Equipment>();
+        Equipment.Init();
         _status = new PlayerStatus();
         _movement.Init(_status);
         _camera = Camera.main;
@@ -37,6 +40,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         });
         _status.IsCrouch.AddListener(_movement.ChangeCrouchAnim);
         _status.IsAction.AddListener(_movement.ChangeAction);
+       
     }
 
     private void OnEnable()
@@ -156,16 +160,19 @@ public class PlayerController : MonoBehaviour, IDamageable
     
     private void RemoveWeapon(InputAction.CallbackContext obj)
     {
-        _movement.SetMotionState(MotionState.Unarmed);
+        Equipment.ChangeMode(WeaponMode.Unarmed);
+        //_movement.SetMotionState(MotionState.Unarmed);
     }
 
     private void SwitchRangeWeapon(InputAction.CallbackContext obj)
     {
-        _movement.SetMotionState(MotionState.Range);
+        Equipment.ChangeMode(WeaponMode.Range);
+        //_movement.SetMotionState(MotionState.Range);
     }
 
     private void SwitchMeleeWeapon(InputAction.CallbackContext obj)
     {
-        _movement.SetMotionState(MotionState.Melee);
+        Equipment.ChangeMode(WeaponMode.Melee);
+        //_movement.SetMotionState(MotionState.Melee);
     }
 }

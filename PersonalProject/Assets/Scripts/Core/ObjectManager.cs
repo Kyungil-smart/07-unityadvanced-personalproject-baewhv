@@ -1,16 +1,16 @@
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
-public class ObjectManager : MonoBehaviour
+public class ObjectManager : SingletonMonoBehaviour<ObjectManager>
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+    public RangeWeapon BasicRangeWeapon;
+
+    void Awake()
     {
-        
+        var tempObj = Addressables.LoadAssetAsync<GameObject>("QueueGun").WaitForCompletion();
+        BasicRangeWeapon = GameObject.Instantiate(tempObj, Vector3.zero, Quaternion.identity).GetComponent<RangeWeapon>();
     }
+    
+
 }

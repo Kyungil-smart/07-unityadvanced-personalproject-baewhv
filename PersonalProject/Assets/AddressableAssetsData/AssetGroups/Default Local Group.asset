@@ -14,7 +14,66 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
   m_GroupName: Default Local Group
   m_GUID: 97a3a464a2b7e5b43bff6d8716d807d5
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: 0f2cc383e432a8142812d483510457c7
+    m_Address: Player
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 33ac2332dfcbe2447ac3128924d7a60a
+    m_Address: QueueGun
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Weapon
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 35a326cdb9a79f74ab2d9ae875759cdb
+    m_Address: Weapon_HockeyStick
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Weapon
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 43ea01dc187aaf640a47714f3f95c24e
+    m_Address: Weapon_Guitar
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Weapon
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 60c1abbd9d7ca8a46800b50a816592f0
+    m_Address: Weapon_GolfBat
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Weapon
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 76b5d6e514a7fec499796985002a1172
+    m_Address: Weapon_MetalBat
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Weapon
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7a16e909b096d1748827886e62d8f89f
+    m_Address: Weapon_Spanner
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Weapon
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 932e4c6bdd42a0449bc2ad2089589863
+    m_Address: Weapon_Axe
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Weapon
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c07f0ce2811b49245903e586ef1e85bc
+    m_Address: Weapon_Wrench
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Weapon
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d6604e2cdf14c8d4899a30ef3fb519db
+    m_Address: Weapon_Bat
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Weapon
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 8375c99bcec07a741bf74aee4c86519b, type: 2}
   m_SchemaSet:
