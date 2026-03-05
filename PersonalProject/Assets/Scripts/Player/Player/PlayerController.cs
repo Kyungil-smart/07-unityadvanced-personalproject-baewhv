@@ -14,7 +14,6 @@ public class PlayerController : MonoBehaviour, IDamageable
     Vector3 InputAxis;
     Vector3 LastInputAxis;
 
-    [SerializeField]private RuntimeAnimatorController[] _controllers;
 
     //unityEvents
     private void Awake()
@@ -91,7 +90,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     }
 
     //interfaces
-    public void Damaged(int value)
+    public void TakeDamage(int value)
     {
         throw new System.NotImplementedException();
     }
@@ -157,16 +156,16 @@ public class PlayerController : MonoBehaviour, IDamageable
     
     private void RemoveWeapon(InputAction.CallbackContext obj)
     {
-        _movement.ChangeAnimController(_controllers[0]);
+        _movement.SetMotionState(MotionState.Unarmed);
     }
 
     private void SwitchRangeWeapon(InputAction.CallbackContext obj)
     {
-        _movement.ChangeAnimController(_controllers[2]);
+        _movement.SetMotionState(MotionState.Range);
     }
 
     private void SwitchMeleeWeapon(InputAction.CallbackContext obj)
     {
-        _movement.ChangeAnimController(_controllers[1]);
+        _movement.SetMotionState(MotionState.Melee);
     }
 }

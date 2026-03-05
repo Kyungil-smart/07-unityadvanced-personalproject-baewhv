@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 
+
+
 public class CharacterMovement : MonoBehaviour
 {
     private CharacterStatus _status;
@@ -21,7 +23,10 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField] private Animator _anim;
 
     public Animator GetAnim => _anim;
-    public AnimationReceiver _animReceiver { get; private set; }
+    private AnimationReceiver _animReceiver;
+
+    public MotionState CurrentMotionState { get; private set; }
+    [SerializeField]private RuntimeAnimatorController[] _controllers;
 
     public void Init(CharacterStatus status)
     {
@@ -76,7 +81,7 @@ public class CharacterMovement : MonoBehaviour
         _jumpStateMachine.ChangeState(state);
     }
 
-    public void ChangeAnimController(RuntimeAnimatorController controller)
+    private void ChangeAnimController(RuntimeAnimatorController controller)
     {
         _anim.runtimeAnimatorController = controller;
     }
@@ -113,4 +118,15 @@ public class CharacterMovement : MonoBehaviour
         if (Physics.Raycast(ray, Vector3.down, out RaycastHit Hit, 0.2f)) return true;
         return false;
     }
+
+    public void SetMotionState(MotionState state)
+    {
+        CurrentMotionState = state;
+    }
+}
+public enum MotionState
+{
+    Unarmed,
+    Melee,
+    Range
 }

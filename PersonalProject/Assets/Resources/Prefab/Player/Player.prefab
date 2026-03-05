@@ -582,6 +582,18 @@ MonoBehaviour:
   OnEndLand:
     m_PersistentCalls:
       m_Calls: []
+  OnStartCollision:
+    m_PersistentCalls:
+      m_Calls: []
+  OnEndCollision:
+    m_PersistentCalls:
+      m_Calls: []
+  OnShoot:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStartEquip:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2662321120918486239
 GameObject:
   m_ObjectHideFlags: 0
@@ -1556,6 +1568,7 @@ GameObject:
   - component: {fileID: 8902395008272841515}
   - component: {fileID: 2965467374850412729}
   - component: {fileID: 8571494265388509151}
+  - component: {fileID: 1125646656271288260}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1618,7 +1631,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c2d7aa84f0f9954d817b88182490243, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  _controllers: []
 --- !u!114 &8571494265388509151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1632,6 +1644,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterMovement
   _anim: {fileID: 2784920034092279040}
+  _controllers: []
+--- !u!114 &1125646656271288260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5619666133475483229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca7d3ecf83e970a4fb60986141158da7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Equipment
 --- !u!1 &5628604491172640594
 GameObject:
   m_ObjectHideFlags: 0

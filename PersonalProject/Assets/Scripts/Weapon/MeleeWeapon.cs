@@ -3,11 +3,37 @@ using UnityEngine;
 
 public class MeleeWeapon : MonoBehaviour
 {
+    private Equipment _owner;
     public int Damage;
-    public int Durability;
+
+    private int _durability;
+
+    private int Durability
+    {
+        get => _durability;
+        set
+        {
+            _durability = value;
+            if(Durability < 0) DestroyWeapon();
+        }
+    }
+
 
     private void OnTriggerEnter(Collider other)
     {
-        (other.transform as IDamageable) 
+        if ((_owner.CompareTag("Enemy") || _owner.CompareTag("Player")) && !other.CompareTag(_owner.tag))
+        {
+            IDamageable target = other.GetComponent<IDamageable>();
+            if (target != null)
+            {
+                target.TakeDamage(Damage);
+                Durability--;
+            }
+        }
+    }
+
+    private void DestroyWeapon()
+    {
+        Destroy(gameObject);
     }
 }
