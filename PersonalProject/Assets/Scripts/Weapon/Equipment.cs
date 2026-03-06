@@ -23,7 +23,7 @@ public class Equipment : MonoBehaviour
     private void Start()
     {
         if(MeleeWeapon)
-            MeleeWeapon.transform.SetParent(MeleeWeaponHolster);
+            MeleeWeapon.transform.SetParent(MeleeWeaponHolster, false);
         if(RangeWeapon)
             RangeWeapon.transform.SetParent(RangeWeaponHolster, false);
     }

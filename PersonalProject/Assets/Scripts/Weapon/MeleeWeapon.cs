@@ -9,6 +9,11 @@ public class MeleeWeapon : MonoBehaviour
     private int _durability;
     private Weapon weapon;
 
+    private void Awake()
+    {
+        GetComponent<Collider>().enabled = false;
+    }
+
     private int Durability
     {
         get => _durability;

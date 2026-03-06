@@ -19,6 +19,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
             }
         }
         _player.Equipment.SetRangeWeapon(ObjectManager.Instance.BasicRangeWeapon);
+        _player.Equipment.SetMeleeWeapon(ObjectManager.Instance.BasicMeleeWeapon);
         
     }
     //플레이어 초기화
