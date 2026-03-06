@@ -9,6 +9,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
     private void Awake()
     {
+        Cursor.visible = false;
+        
         if (!_player)
         {
             _player = FindAnyObjectByType<PlayerController>();
@@ -20,7 +22,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         }
         _player.Equipment.SetRangeWeapon(ObjectManager.Instance.BasicRangeWeapon);
         _player.Equipment.SetMeleeWeapon(ObjectManager.Instance.BasicMeleeWeapon);
-        
+
     }
     //플레이어 초기화
     //각종 매니저 초기화
